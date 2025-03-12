@@ -29,6 +29,7 @@ class AuthController {
           ...userDoc.data()!,
         });
       }
+
       return null;
     } catch (e) {
       rethrow;

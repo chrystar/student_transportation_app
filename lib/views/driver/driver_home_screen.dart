@@ -17,7 +17,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
   bool _isOnline = false;
   Set<Marker> _markers = {};
   final List<TripModel> _activeTrips = [];
-  LocationData? _currentLocation;
+   LocationData? _currentLocation;
 
   @override
   void initState() {
@@ -30,8 +30,8 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
     if (initialized) {
       _locationService.startLocationUpdates().listen((locationData) {
         setState(() {
-          _currentLocation = locationData;
-          _updateDriverMarker(locationData);
+          // _currentLocation = locationData;
+          // _updateDriverMarker(locationData);
         });
 
         if (_isOnline) {

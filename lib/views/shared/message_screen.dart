@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'dart:io';
 import '../../services/message_service.dart';
 
@@ -22,8 +21,8 @@ class _MessageScreenState extends State<MessageScreen> {
   final FirebaseStorage _storage = FirebaseStorage.instance;
   final TextEditingController _messageController = TextEditingController();
   final TextEditingController _searchController = TextEditingController();
-  final FlutterLocalNotificationsPlugin _notificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  // final FlutterLocalNotificationsPlugin _notificationsPlugin =
+  //     FlutterLocalNotificationsPlugin();
   bool _isLoading = false;
   String _searchQuery = '';
   File? _imageFile;
@@ -32,7 +31,7 @@ class _MessageScreenState extends State<MessageScreen> {
   @override
   void initState() {
     super.initState();
-    _initializeNotifications();
+    //_initializeNotifications();
     _listenToMessages();
   }
 
@@ -43,20 +42,20 @@ class _MessageScreenState extends State<MessageScreen> {
     super.dispose();
   }
 
-  Future<void> _initializeNotifications() async {
-    const androidSettings =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
-    const IOSInitializationSettings iosSettings = IOSInitializationSettings();
-    const initSettings =
-        InitializationSettings(android: androidSettings, iOS: iosSettings);
-
-    await _notificationsPlugin.initialize(
-      initSettings,
-      onSelectNotification: (String? payload) async {
-        // Handle notification tap
-      },
-    );
-  }
+  // Future<void> _initializeNotifications() async {
+  //   const androidSettings =
+  //       AndroidInitializationSettings('@mipmap/ic_launcher');
+  //   const IOSInitializationSettings iosSettings = IOSInitializationSettings();
+  //   const initSettings =
+  //       InitializationSettings(android: androidSettings, iOS: iosSettings);
+  //
+  //   await _notificationsPlugin.initialize(
+  //     initSettings,
+  //     onSelectNotification: (String? payload) async {
+  //       // Handle notification tap
+  //     },
+  //   );
+  // }
 
   void _listenToMessages() {
     final user = _auth.currentUser;
@@ -70,34 +69,34 @@ class _MessageScreenState extends State<MessageScreen> {
         .listen((snapshot) {
       for (var change in snapshot.docChanges) {
         if (change.type == DocumentChangeType.added) {
-          _showNotification(change.doc.data() as Map<String, dynamic>);
+         // _showNotification(change.doc.data() as Map<String, dynamic>);
         }
       }
     });
   }
-
-  Future<void> _showNotification(Map<String, dynamic> message) async {
-    const androidDetails = AndroidNotificationDetails(
-      'messages_channel',
-      'Messages',
-      channelDescription: 'Channel for message notifications',
-      importance: Importance.high,
-      priority: Priority.high,
-      enableLights: true,
-      enableVibration: true,
-      playSound: true,
-    );
-    const IOSNotificationDetails iosDetails = IOSNotificationDetails();
-    const details =
-        NotificationDetails(android: androidDetails, iOS: iosDetails);
-
-    await _notificationsPlugin.show(
-      DateTime.now().millisecond,
-      'New Message from ${message['senderName']}',
-      message['content'],
-      details,
-    );
-  }
+  //
+  // Future<void> _showNotification(Map<String, dynamic> message) async {
+  //   const androidDetails = AndroidNotificationDetails(
+  //     'messages_channel',
+  //     'Messages',
+  //     channelDescription: 'Channel for message notifications',
+  //     importance: Importance.high,
+  //     priority: Priority.high,
+  //     enableLights: true,
+  //     enableVibration: true,
+  //     playSound: true,
+  //   );
+  //   const IOSNotificationDetails iosDetails = IOSNotificationDetails();
+  //   const details =
+  //       NotificationDetails(android: androidDetails, iOS: iosDetails);
+  //
+  //   await _notificationsPlugin.show(
+  //     DateTime.now().millisecond,
+  //     'New Message from ${message['senderName']}',
+  //     message['content'],
+  //     details,
+  //   );
+  // }
 
   Future<void> _pickImage() async {
     final picker = ImagePicker();

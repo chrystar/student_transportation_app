@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:student_transportation_app/models/user_model.dart';
+import 'package:student_transportation_app/routes/app_routes.dart';
+import 'package:student_transportation_app/views/parent/parent_home_screen.dart';
 import '../../providers/auth_provider.dart';
 import 'register_screen.dart';
 
@@ -27,12 +30,41 @@ class _LoginScreenState extends State<LoginScreen> {
     if (!_formKey.currentState!.validate()) return;
 
     try {
+      print('Attempting to sign in...');
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
       await authProvider.signIn(
         _emailController.text.trim(),
         _passwordController.text,
       );
+      print('Sign in successful');
+
+      final userId = authProvider.user!.uid;
+      print('User ID: $userId');
+      final role = await authProvider.getUserRole(userId);
+      print('User role: $role');
+
+      if (!mounted) return;
+
+      switch (role) {
+        case 'parent':
+          print('Navigating to parent home screen');
+          Navigator.of(context).pushReplacementNamed(AppRoutes.parentHome);
+          break;
+        case 'driver':
+          print('Navigating to driver home screen');
+          Navigator.of(context).pushReplacementNamed(AppRoutes.driverHome);
+          break;
+        case 'student':
+          print('Navigating to student home screen');
+          Navigator.of(context).pushReplacementNamed(AppRoutes.studentHome);
+          break;
+        default:
+          print('Unknown role: $role');
+          // Handle other roles or show an error
+          return;
+      }
     } catch (e) {
+      print('Error during login: $e');
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(e.toString())),

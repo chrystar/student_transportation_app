@@ -11,6 +11,9 @@ import 'services/notification_service.dart';
 import 'config/theme.dart';
 import 'routes/app_routes.dart';
 import 'views/auth/splash_screen.dart';
+import 'views/auth/login_screen.dart';
+import 'views/parent/parent_home_screen.dart';
+import 'views/driver/driver_home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,11 +23,8 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  // Setup service locator
-  setupServiceLocator();
-
   // Initialize notification service
-  await locator<NotificationService>().initialize();
+  // await locator<NotificationService>().initialize();
 
   final prefs = await SharedPreferences.getInstance();
 
@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: themeProvider.themeMode,
-          initialRoute: '/',
+          initialRoute: '/splash',
           onGenerateRoute: AppRoutes.onGenerateRoute,
           onUnknownRoute: AppRoutes.onUnknownRoute,
           routes: AppRoutes.routes,

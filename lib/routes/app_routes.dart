@@ -14,12 +14,12 @@ import '../views/admin/message_users.dart';
 import '../views/admin/reports_screen.dart';
 
 class AppRoutes {
-  static const String splash = '/';
+  static const String splash = '/splash';
   static const String login = '/login';
   static const String register = '/register';
 
   // Student routes
-  static const String studentHome = '/student/home';
+  static const String studentHome = '/student-home';
   static const String studentMessage = '/student/message';
 
   // Parent routes
@@ -27,7 +27,7 @@ class AppRoutes {
   static const String parentTracking = '/parent/tracking';
 
   // Driver routes
-  static const String driverHome = '/driver/home';
+  static const String driverHome = '/driver-home';
   static const String driverRoute = '/driver/route';
 
   // Admin routes

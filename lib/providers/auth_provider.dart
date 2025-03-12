@@ -37,11 +37,18 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
+  Future<String> getUserRole(String userId) async {
+    final doc = await _firestore.collection('users').doc(userId).get();
+    final role = doc.data()?['role'];
+    return role ?? 'unknown';
+  }
+
   Future<void> signIn(String email, String password) async {
     try {
       _isLoading = true;
       notifyListeners();
       await _auth.signInWithEmailAndPassword(email: email, password: password);
+      await _loadUserRole(); // Ensure user role is loaded after sign in
     } finally {
       _isLoading = false;
       notifyListeners();
