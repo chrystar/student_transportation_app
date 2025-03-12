@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'app_colors.dart';
-import 'text_widget.dart';
 
 Widget appTextField({
   TextEditingController? controller,
