@@ -13,7 +13,7 @@ class TripHistoryScreen extends StatefulWidget {
     this.studentIds,
     this.userId,
     required this.isParent,
-  }) : assert(studentIds != null || userId != null);
+   }) : assert(studentIds != null || userId != null);
 
   @override
   State<TripHistoryScreen> createState() => _TripHistoryScreenState();

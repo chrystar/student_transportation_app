@@ -68,6 +68,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xffEC441E),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -78,7 +79,6 @@ class _SplashScreenState extends State<SplashScreen> {
               height: 150,
             ),
             const SizedBox(height: 24),
-            const CircularProgressIndicator(),
             const SizedBox(height: 16),
             const Text(
               'Student Transportation App',

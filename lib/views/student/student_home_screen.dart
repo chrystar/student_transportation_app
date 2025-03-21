@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:student_transportation_app/views/widgets/text_widget.dart';
 import '../auth/register_screen.dart';
 import 'booking_screen.dart';
-import 'check_in_out_screen.dart';
-import '../shared/trip_history_screen.dart';
-import '../student/message_screen.dart';
+import 'round_trip_screen.dart';
+import 'multi_city_screen.dart';
 
 class StudentHomeScreen extends StatefulWidget {
   const StudentHomeScreen({super.key});
@@ -14,7 +14,8 @@ class StudentHomeScreen extends StatefulWidget {
   State<StudentHomeScreen> createState() => _StudentHomeScreenState();
 }
 
-class _StudentHomeScreenState extends State<StudentHomeScreen> {
+class _StudentHomeScreenState extends State<StudentHomeScreen>
+    with SingleTickerProviderStateMixin {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   String _studentName = '';
@@ -26,6 +27,8 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
     super.initState();
     _loadUserData();
   }
+
+
 
   Future<void> _loadUserData() async {
     User? user = _auth.currentUser;
@@ -66,86 +69,41 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
     });
   }
 
-  Widget _getPage(int index) {
-    switch (index) {
-      case 0:
-        return _buildHomeContent();
-      case 1:
-        return const CheckInOutScreen();
-      case 2:
-        return const StudentMessageScreen();
-      case 3:
-        return TripHistoryScreen(
-          userId: _auth.currentUser?.uid,
-          isParent: false,
-        );
-      default:
-        return _buildHomeContent();
-    }
-  }
-
-  Widget _buildHomeContent() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: GridView.count(
-        crossAxisCount: 2,
-        crossAxisSpacing: 16,
-        mainAxisSpacing: 16,
-        children: [
-          _buildDashboardCard(
-            icon: Icons.directions_bus,
-            title: 'Book Transportation',
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const BookingScreen()),
-              );
-            },
-          ),
-          _buildDashboardCard(
-            icon: Icons.qr_code,
-            title: 'Check In/Out',
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const CheckInOutScreen()),
-              );
-            },
-          ),
-          _buildDashboardCard(
-            icon: Icons.history,
-            title: 'Trip History',
-            onTap: () {
-              // tODO: Implement trip history screen
-            },
-          ),
-          _buildDashboardCard(
-            icon: Icons.notifications,
-            title: 'Notifications',
-            onTap: () {
-              // tODO: Implement notifications screen
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.onSecondary,
       appBar: AppBar(
-        title: const Text('Student Dashboard'),
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        title: text24Normal(
+          text: 'Smart Ride',
+          color: Theme.of(context).colorScheme.secondary,
+        ),
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: Image.asset("assets/images/menubar.png"),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+            );
+          },
+        ),
+        backgroundColor: Theme.of(context).colorScheme.onSecondary,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 15),
+            child: Icon(Icons.notifications),
+          ),
+        ],
       ),
       drawer: Drawer(
+        backgroundColor: Theme.of(context).colorScheme.onSecondary,
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
             DrawerHeader(
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primaryContainer,
+                color: Theme.of(context).colorScheme.onSecondary,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -200,7 +158,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
               title: const Text('Settings'),
               onTap: () {
                 Navigator.pop(context);
-                // tODO: Navigate to settings screen
+                // TODO: Navigate to settings screen
               },
             ),
             ListTile(
@@ -211,61 +169,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
           ],
         ),
       ),
-      body: _getPage(_selectedIndex),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.qr_code),
-            label: 'Check In',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.message),
-            label: 'Messages',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.location_on),
-            label: 'Tracking',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-      ),
-    );
-  }
-
-  Widget _buildDashboardCard({
-    required IconData icon,
-    required String title,
-    required VoidCallback onTap,
-  }) {
-    return Card(
-      elevation: 2,
-      child: InkWell(
-        onTap: onTap,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              size: 48,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-      ),
+      body: BookingScreen(),
     );
   }
 }

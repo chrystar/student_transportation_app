@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:student_transportation_app/views/widgets/text_widget.dart';
 import '../../controllers/auth_controller.dart';
 import '../../models/message_model.dart';
 import '../../repositories/message_repository.dart';
@@ -89,121 +90,153 @@ class _MessageScreenState extends State<MessageScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          // Message List
-          Expanded(
-            child: StreamBuilder<List<MessageModel>>(
-              stream: _messagesStream,
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  return const Center(child: Text('Something went wrong'));
-                }
-
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-
-                final messages = snapshot.data ?? [];
-                return ListView.builder(
-                  reverse: true,
-                  itemCount: messages.length,
-                  itemBuilder: (context, index) {
-                    final message = messages[index];
-                    return MessageBubble(message: message);
-                  },
-                );
+      appBar: AppBar(
+        leading: GestureDetector(
+          child: Icon(
+            Icons.arrow_back_ios,
+          ),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 15),
+            child: GestureDetector(
+              onTap: () {
+                showModalBottomSheet(
+                  scrollControlDisabledMaxHeightRatio: 0.2,
+                    context: context,
+                    builder: (context) {
+                      return Container();
+                    });
               },
+              child: Icon(Icons.menu_rounded),
             ),
-          ),
-
-          // Message Input Section
-          Container(
-            padding: const EdgeInsets.all(8.0),
-            decoration: BoxDecoration(
-              color: Theme.of(context).cardColor,
-              boxShadow: [
-                BoxShadow(
-                  offset: const Offset(0, -2),
-                  blurRadius: 4,
-                  color: Colors.black,
-                ),
-              ],
-            ),
-            child: Column(
-              children: [
-                // Recipient and Emergency Toggle Row
-                Row(
-                  children: [
-                    // Recipient Dropdown
-                    Expanded(
-                      child: DropdownButton<String>(
-                        value: _selectedRecipient,
-                        isExpanded: true,
-                        items: const [
-                          DropdownMenuItem(
-                            value: 'admin',
-                            child: Text('Admin'),
-                          ),
-                          DropdownMenuItem(
-                            value: 'parent',
-                            child: Text('Parent'),
-                          ),
-                        ],
-                        onChanged: (String? value) {
-                          if (value != null) {
-                            setState(() {
-                              _selectedRecipient = value;
-                            });
-                          }
-                        },
-                      ),
-                    ),
-                    // Emergency Toggle
-                    Row(
-                      children: [
-                        const Text('Emergency'),
-                        Switch(
-                          value: _isEmergency,
-                          onChanged: (value) {
-                            setState(() {
-                              _isEmergency = value;
-                            });
-                          },
-                          activeColor: Colors.red,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                // Message Input Row
-                Row(
-                  children: [
-                    // Text Field
-                    Expanded(
-                      child: TextField(
-                        controller: _messageController,
-                        decoration: const InputDecoration(
-                          hintText: 'Type your message...',
-                          border: OutlineInputBorder(),
-                        ),
-                        maxLines: null,
-                        keyboardType: TextInputType.multiline,
-                      ),
-                    ),
-                    // Send Button
-                    const SizedBox(width: 8),
-                    IconButton(
-                      onPressed: _sendMessage,
-                      icon: const Icon(Icons.send),
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
+          )
         ],
+        title: text24Normal(
+            text: "Christian", color: Theme.of(context).colorScheme.secondary),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.only(left: 20, right: 20),
+        child: Column(
+          children: [
+            // Message List
+            Expanded(
+              child: StreamBuilder<List<MessageModel>>(
+                stream: _messagesStream,
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return const Center(child: Text('Something went wrong'));
+                  }
+
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  final messages = snapshot.data ?? [];
+                  return ListView.builder(
+                    reverse: true,
+                    itemCount: messages.length,
+                    itemBuilder: (context, index) {
+                      final message = messages[index];
+                      return MessageBubble(message: message);
+                    },
+                  );
+                },
+              ),
+            ),
+
+            // Message Input Section
+            Container(
+             // padding: const EdgeInsets.all(8.0),
+              margin: EdgeInsets.only(bottom: 15),
+              height: 60,
+              decoration: BoxDecoration(
+                color: Theme.of(context).cardColor,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    offset: const Offset(0, 1),
+                    blurRadius: 2,
+                    color: Colors.grey,
+                  ),
+                ],
+              ),
+              child: Column(
+                children: [
+                  // Recipient and Emergency Toggle Row
+                  Row(
+                    children: [
+                     // Recipient Dropdown
+                     //  Expanded(
+                     //    child: DropdownButton<String>(
+                     //      value: _selectedRecipient,
+                     //      isExpanded: true,
+                     //      items: const [
+                     //        DropdownMenuItem(
+                     //          value: 'admin',
+                     //          child: Text('Admin'),
+                     //        ),
+                     //        DropdownMenuItem(
+                     //          value: 'parent',
+                     //          child: Text('Parent'),
+                     //        ),
+                     //      ],
+                     //      onChanged: (String? value) {
+                     //        if (value != null) {
+                     //          setState(() {
+                     //            _selectedRecipient = value;
+                     //          });
+                     //        }
+                     //      },
+                     //    ),
+                     //  ),
+                     //Emergency Toggle
+                    ],
+                  ),
+                  // Message Input Row
+                  Row(
+                    children: [
+                      // Text Field
+                      Expanded(
+                        child: TextField(
+                          controller: _messageController,
+                          decoration: const InputDecoration(
+                            hintText: 'Type your message...',
+                            border: OutlineInputBorder(),
+                            filled: false,
+                          ),
+                          maxLines: null,
+                          keyboardType: TextInputType.multiline,
+                        ),
+                      ),
+                      // Send Button
+                      const SizedBox(width: 8),
+                      IconButton(
+                        onPressed: _sendMessage,
+                        icon: const Icon(Icons.send),
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      Row(
+                        children: [
+                          //const Text('Emergency'),
+                          // Switch(
+                          //   value: _isEmergency,
+                          //   onChanged: (value) {
+                          //     setState(() {
+                          //       _isEmergency = value;
+                          //     });
+                          //   },
+                          //   activeColor: Colors.red,
+                          // ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

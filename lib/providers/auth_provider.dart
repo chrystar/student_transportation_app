@@ -25,6 +25,10 @@ class AuthProvider with ChangeNotifier {
     });
   }
 
+  Future<void> getCurrentUser() async {
+    await _auth.currentUser;
+  }
+
   Future<void> _loadUserRole() async {
     if (_user == null) return;
 

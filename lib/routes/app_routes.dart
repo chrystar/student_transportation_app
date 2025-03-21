@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:student_transportation_app/views/student/bottom_navigator.dart';
 import 'page_transition.dart';
 import '../views/auth/splash_screen.dart';
 import '../views/auth/login_screen.dart';
@@ -35,6 +36,8 @@ class AppRoutes {
   static const String adminMessages = '/admin/messages';
   static const String adminReports = '/admin/reports';
 
+  static const String bottomNavigator = '/bottom';
+
   static Map<String, WidgetBuilder> get routes => {
         splash: (context) => const SplashScreen(),
         login: (context) => const LoginScreen(),
@@ -43,6 +46,9 @@ class AppRoutes {
         // Student routes
         studentHome: (context) => const StudentHomeScreen(),
         studentMessage: (context) => const MessageScreen(),
+
+        //bottom routes
+        bottomNavigator: (context) => const BottomNavigation(),
 
         // Parent routes
         parentHome: (context) => const ParentHomeScreen(),

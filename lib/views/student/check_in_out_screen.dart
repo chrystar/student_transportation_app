@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
+import 'package:student_transportation_app/views/widgets/text_widget.dart';
 import '../../controllers/auth_controller.dart';
 import '../../controllers/check_in_out_controller.dart';
 import '../../models/trip_model.dart';
@@ -50,8 +51,10 @@ class _CheckInOutScreenState extends State<CheckInOutScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.onSecondary,
       appBar: AppBar(
-        title: const Text('Check In/Out'),
+        backgroundColor: Theme.of(context).colorScheme.onSecondary,
+        title: text24Normal(text: "Check In", color: Theme.of(context).colorScheme.secondary),
         automaticallyImplyLeading: false,
       ),
       body: RefreshIndicator(

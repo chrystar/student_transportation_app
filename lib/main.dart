@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:student_transportation_app/views/student/bottom_navigator.dart';
+import 'package:student_transportation_app/views/student/student_home_screen.dart';
 import 'firebase_options.dart';
 import 'providers/theme_provider.dart';
 import 'providers/auth_provider.dart';
@@ -53,11 +55,11 @@ class MyApp extends StatelessWidget {
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: themeProvider.themeMode,
-          initialRoute: '/splash',
+          initialRoute: AppRoutes.splash,
           onGenerateRoute: AppRoutes.onGenerateRoute,
           onUnknownRoute: AppRoutes.onUnknownRoute,
           routes: AppRoutes.routes,
-          home: const SplashScreen(),
+          home: SplashScreen(),
         );
       },
     );

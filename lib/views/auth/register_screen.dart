@@ -66,12 +66,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
               key: _formKey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
                     'Create Account',
                     style: TextStyle(
                       fontSize: 24,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                   const SizedBox(height: 24),
