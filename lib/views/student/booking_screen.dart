@@ -162,201 +162,184 @@ class _BookingScreenState extends State<BookingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.onSecondary,
-        body: SingleChildScrollView(
-            padding: const EdgeInsets.only(left: 30, right: 30, top: 16),
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              //Todo  tabBar
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  SizedBox(height: 20),
-                  // Date Selection
-                  Text(
-                    'Select Date',
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  const SizedBox(height: 8),
-                  InkWell(
-                    onTap: () => _selectDate(context),
-                    child: Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                              DateFormat('MMM dd, yyyy').format(_selectedDate)),
-                          const Icon(Icons.calendar_today),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-
-                  // Time Selection
-                  Text(
-                    'Select Time',
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  const SizedBox(height: 8),
-                  InkWell(
-                    onTap: () => _selectTime(context),
-                    child: Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(_selectedTime.format(context)),
-                          const Icon(Icons.access_time),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-
-                  // Pickup Location
-                  Text(
-                    'Pickup Location',
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  const SizedBox(height: 8),
-                  popUpButtonContainer(
-                      // text1: 'From',
-                      text2: toClickedText.toString(),
-                      width: double.infinity,
-                      context: context,
-                      onPressed: () {
-                        showModalBottomSheet(
-                            context: context,
-                            backgroundColor: Colors.white,
-                            scrollControlDisabledMaxHeightRatio: 0.6,
-                            builder: (context) {
-                              return Container(
-                                padding: EdgeInsets.only(top: 60),
-                                width: double.infinity,
-                                child: Column(
-                                  children: [
-                                    Expanded(
-                                      child: ListView.builder(
-                                        itemCount: states.length,
-                                        itemBuilder:
-                                            (BuildContext context, int index) {
-                                          return Container(
-                                            padding: EdgeInsets.all(20),
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                setState(() {
-                                                  toClickedText =
-                                                      states[index].toString();
-                                                });
-                                                Navigator.pop(context);
-                                              },
-                                              child: text20Normal(
-                                                  text:
-                                                      states[index].toString(),
-                                                  color: Colors.black),
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            });
-                      }),
-
-                  const SizedBox(height: 24),
-
-                  // Dropoff Location
-                  Text(
-                    'Dropoff Location',
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  const SizedBox(height: 8),
-                  popUpButtonContainer(
-                      text2: fromClickedText.toString(),
-                      width: double.infinity,
-                      context: context,
-                      onPressed: () {
-                        showModalBottomSheet(
-                            context: context,
-                            backgroundColor: Colors.white,
-                            scrollControlDisabledMaxHeightRatio: 0.6,
-                            builder: (context) {
-                              return Container(
-                                padding: EdgeInsets.only(top: 60),
-                                width: double.infinity,
-                                child: Column(
-                                  children: [
-                                    Expanded(
-                                      child: ListView.builder(
-                                        itemCount: states.length,
-                                        itemBuilder:
-                                            (BuildContext context, int index) {
-                                          return Container(
-                                            padding: EdgeInsets.all(20),
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                setState(() {
-                                                  fromClickedText =
-                                                      states[index].toString();
-                                                });
-                                                Navigator.pop(context);
-                                              },
-                                              child: text20Normal(
-                                                  text:
-                                                      states[index].toString(),
-                                                  color: Colors.black),
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            });
-                      }),
-
-                  const SizedBox(height: 32),
-
-                  // Book Button
-                  SizedBox(
-                    child: Button(
-                      width: double.infinity,
-                      color: Color(0xffEC441E),
-                      onPressed: () {
-                        _isLoading ? null : _bookTrip;
-                        print("booking button clicked");
-                      },
-                      text: 'Book Transportation',
-                    ),
-                  ),
-                  // SizedBox(
-                  //   width: double.infinity,
-                  //   child: ElevatedButton(
-                  //     onPressed: _isLoading ? null : _bookTrip,
-                  //     style: ElevatedButton.styleFrom(
-                  //       padding: const EdgeInsets.symmetric(vertical: 16),
-                  //     ),
-                  //     child: _isLoading
-                  //         ? const CircularProgressIndicator()
-                  //         : const Text('Book Transportation'),
-                  //   ),
-                  // ),
-                ],
+      backgroundColor: Theme.of(context).colorScheme.onSecondary,
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.only(left: 30, right: 30, top: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            //SizedBox(height: 20),
+            // Date Selection
+            Text(
+              'Select Date',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            const SizedBox(height: 8),
+            InkWell(
+              onTap: () => _selectDate(context),
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(DateFormat('MMM dd, yyyy').format(_selectedDate)),
+                    const Icon(Icons.calendar_today),
+                  ],
+                ),
               ),
-            ])));
+            ),
+            const SizedBox(height: 24),
+
+            // Time Selection
+            Text(
+              'Select Time',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            const SizedBox(height: 8),
+            InkWell(
+              onTap: () => _selectTime(context),
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(_selectedTime.format(context)),
+                    const Icon(Icons.access_time),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 24),
+
+            // Pickup Location
+            Text(
+              'Pickup Location',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            const SizedBox(height: 8),
+            popUpButtonContainer(
+                // text1: 'From',
+                text2: toClickedText.toString(),
+                width: double.infinity,
+                context: context,
+                onPressed: () {
+                  showModalBottomSheet(
+                      context: context,
+                      backgroundColor: Colors.white,
+                      scrollControlDisabledMaxHeightRatio: 0.6,
+                      builder: (context) {
+                        return Container(
+                          padding: EdgeInsets.only(top: 60),
+                          width: double.infinity,
+                          child: Column(
+                            children: [
+                              Expanded(
+                                child: ListView.builder(
+                                  itemCount: states.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return Container(
+                                      padding: EdgeInsets.all(20),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            toClickedText =
+                                                states[index].toString();
+                                          });
+                                          Navigator.pop(context);
+                                        },
+                                        child: text20Normal(
+                                            text: states[index].toString(),
+                                            color: Colors.black),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      });
+                }),
+
+            const SizedBox(height: 24),
+
+            // Dropoff Location
+            Text(
+              'Dropoff Location',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            const SizedBox(height: 8),
+            popUpButtonContainer(
+                text2: fromClickedText.toString(),
+                width: double.infinity,
+                context: context,
+                onPressed: () {
+                  showModalBottomSheet(
+                      context: context,
+                      backgroundColor: Colors.white,
+                      scrollControlDisabledMaxHeightRatio: 0.6,
+                      builder: (context) {
+                        return Container(
+                          padding: EdgeInsets.only(top: 60),
+                          width: double.infinity,
+                          child: Column(
+                            children: [
+                              Expanded(
+                                child: ListView.builder(
+                                  itemCount: states.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return Container(
+                                      padding: EdgeInsets.all(20),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            fromClickedText =
+                                                states[index].toString();
+                                          });
+                                          Navigator.pop(context);
+                                        },
+                                        child: text20Normal(
+                                            text: states[index].toString(),
+                                            color: Colors.black),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      });
+                }),
+
+            const SizedBox(height: 32),
+
+            // Book Button
+            SizedBox(
+              child: Button(
+                width: double.infinity,
+                color: Color(0xffEC441E),
+                onPressed: () {
+                  _isLoading ? null : _bookTrip;
+                  print("booking button clicked");
+                },
+                text: 'Book Transportation',
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 

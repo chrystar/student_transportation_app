@@ -48,7 +48,6 @@ class AppRoutes {
         studentMessage: (context) => const MessageScreen(),
 
         //bottom routes
-        bottomNavigator: (context) => const BottomNavigation(),
 
         // Parent routes
         parentHome: (context) => const ParentHomeScreen(),

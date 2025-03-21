@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:student_transportation_app/views/student/tracking_screen.dart';
 import 'package:student_transportation_app/views/widgets/text_widget.dart';
 import '../auth/register_screen.dart';
+import '../shared/trip_history_screen.dart';
 import 'booking_screen.dart';
-import 'round_trip_screen.dart';
-import 'multi_city_screen.dart';
+import 'check_in_out_screen.dart';
+import 'message_screen.dart';
+
+final FirebaseAuth _auth = FirebaseAuth.instance;
+
+
 
 class StudentHomeScreen extends StatefulWidget {
   const StudentHomeScreen({super.key});
@@ -21,6 +27,16 @@ class _StudentHomeScreenState extends State<StudentHomeScreen>
   String _studentName = '';
   String _studentEmail = '';
   int _selectedIndex = 0;
+
+  final List _getPage = [
+   // StudentHomeScreen(),
+    BookingScreen(),
+    CheckInOutScreen(),
+    StudentMessageScreen(),
+    TrackingScreen(),
+    // TripHistoryScreen(userId: _auth.currentUser?.uid, isParent: false),
+  ];
+
 
   @override
   void initState() {
@@ -68,6 +84,8 @@ class _StudentHomeScreenState extends State<StudentHomeScreen>
       _selectedIndex = index;
     });
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -169,7 +187,33 @@ class _StudentHomeScreenState extends State<StudentHomeScreen>
           ],
         ),
       ),
-      body: BookingScreen(),
+      body: _getPage[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Theme.of(context).colorScheme.onSecondary,
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: Color(0xffEC441E),
+        showUnselectedLabels: false,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.qr_code),
+            label: 'Check In',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.message),
+            label: 'Messages',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.location_on),
+            label: 'Tracking',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+      ),
     );
   }
 }
