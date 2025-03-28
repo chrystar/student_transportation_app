@@ -26,6 +26,8 @@ class MessageModel {
   final String recipientType;
   final MessageStatus status;
   final bool read;
+  final String? imageUrl; // New field for image messages
+
 
   MessageModel({
     this.id,
@@ -37,6 +39,8 @@ class MessageModel {
     required this.recipientType,
     required this.status,
     required this.read,
+    this.imageUrl,
+
   });
 
   // Create a MessageModel from a Map (usually from Firestore)
@@ -51,6 +55,7 @@ class MessageModel {
       recipientType: map['recipientType'] ?? 'admin',
       status: MessageStatus.fromString(map['status'] ?? ''),
       read: map['read'] ?? false,
+      imageUrl: map['imageUrl'], // Store image URL in Firestore
     );
   }
 
@@ -73,6 +78,7 @@ class MessageModel {
       'recipientType': recipientType,
       'status': status.toString(),
       'read': read,
+      'imageUrl': imageUrl, // Store image URL in Firestore
     };
   }
 

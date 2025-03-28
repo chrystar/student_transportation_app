@@ -20,6 +20,7 @@ class TripModel {
   final String? driverName;
   final DateTime? estimatedArrival;
   final String? studentName;
+  final int? passenger;
 
   TripModel({
     required this.id,
@@ -32,6 +33,7 @@ class TripModel {
     required this.pickupAddress,
     required this.dropoffAddress,
     required this.status,
+    required this.passenger,
     this.checkInTime,
     this.checkOutTime,
     this.rating,
@@ -41,24 +43,54 @@ class TripModel {
     this.studentName,
   });
 
+  // Map<String, dynamic> toMap() {
+  //   return {
+  //     'id': id,
+  //     'studentId': studentId,
+  //     'driverId': driverId,
+  //     'parentId': parentId,
+  //     'pickupTime': pickupTime,
+  //     'pickupLocation': pickupLocation,
+  //     'dropoffLocation': dropoffLocation,
+  //     'pickupAddress': pickupAddress,
+  //     'dropoffAddress': dropoffAddress,
+  //     'status': status.toString(),
+  //     'checkInTime': checkInTime,
+  //     'checkOutTime': checkOutTime,
+  //     'rating': rating,
+  //     'ratingComment': ratingComment,
+  //     'driverName': driverName,
+  //     'estimatedArrival': estimatedArrival,
+  //     'studentName': studentName,
+  //     'passengers': passenger,
+  //   };
+  // }
+
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'studentId': studentId,
       'driverId': driverId,
       'parentId': parentId,
-      'pickupTime': pickupTime,
-      'pickupLocation': pickupLocation,
-      'dropoffLocation': dropoffLocation,
+      'pickupTime': pickupTime.toIso8601String(), // Convert DateTime to String
+      'pickupLocation': {
+        'latitude': pickupLocation.latitude,
+        'longitude': pickupLocation.longitude,
+      }, // Serialize GeoPoint
+      'dropoffLocation': {
+        'latitude': dropoffLocation.latitude,
+        'longitude': dropoffLocation.longitude,
+      }, // Serialize GeoPoint
       'pickupAddress': pickupAddress,
       'dropoffAddress': dropoffAddress,
-      'status': status.toString(),
-      'checkInTime': checkInTime,
-      'checkOutTime': checkOutTime,
+      'status': status.toString(), // Convert enum to String
+      'passengers': passenger, // Ensure passengers is included
+      'checkInTime': checkInTime?.toIso8601String(), // Nullable DateTime
+      'checkOutTime': checkOutTime?.toIso8601String(), // Nullable DateTime
       'rating': rating,
       'ratingComment': ratingComment,
       'driverName': driverName,
-      'estimatedArrival': estimatedArrival,
+      'estimatedArrival': estimatedArrival?.toIso8601String(), // Nullable DateTime
       'studentName': studentName,
     };
   }
@@ -88,6 +120,7 @@ class TripModel {
       driverName: map['driverName'] as String?,
       estimatedArrival: (map['estimatedArrival'] as Timestamp?)?.toDate(),
       studentName: map['studentName'] as String?,
+      passenger: map['passenger'] ?? 1,
     );
   }
 }

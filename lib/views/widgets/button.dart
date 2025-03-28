@@ -14,7 +14,7 @@ class Button extends StatelessWidget {
   });
 
   double? width;
-  VoidCallback onPressed;
+ Function()? onPressed;
   String text;
   Color color;
   Color textColor;

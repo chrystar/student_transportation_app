@@ -32,7 +32,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen>
    // StudentHomeScreen(),
     BookingScreen(),
     CheckInOutScreen(),
-    StudentMessageScreen(),
+    MessageScreen(),
     TrackingScreen(),
     // TripHistoryScreen(userId: _auth.currentUser?.uid, isParent: false),
   ];
@@ -65,19 +65,6 @@ class _StudentHomeScreenState extends State<StudentHomeScreen>
     }
   }
 
-  Future<void> _handleLogout() async {
-    try {
-      await _auth.signOut();
-      if (mounted) {
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const RegisterScreen()),
-          (route) => false,
-        );
-      }
-    } catch (e) {
-      print('Error signing out: $e');
-    }
-  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -91,102 +78,8 @@ class _StudentHomeScreenState extends State<StudentHomeScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.onSecondary,
-      appBar: AppBar(
-        title: text24Normal(
-          text: 'Smart Ride',
-          color: Theme.of(context).colorScheme.secondary,
-        ),
-        leading: Builder(
-          builder: (BuildContext context) {
-            return IconButton(
-              icon: Image.asset("assets/images/menubar.png"),
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
-            );
-          },
-        ),
-        backgroundColor: Theme.of(context).colorScheme.onSecondary,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 15),
-            child: Icon(Icons.notifications),
-          ),
-        ],
-      ),
-      drawer: Drawer(
-        backgroundColor: Theme.of(context).colorScheme.onSecondary,
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.onSecondary,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const CircleAvatar(
-                    radius: 30,
-                    child: Icon(Icons.person, size: 35),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    _studentName,
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                  Text(
-                    _studentEmail,
-                    style: const TextStyle(fontSize: 14),
-                  ),
-                ],
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.dashboard),
-              title: const Text('Dashboard'),
-              onTap: () {
-                Navigator.pop(context);
-                _onItemTapped(0);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.directions_bus),
-              title: const Text('Book Transportation'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const BookingScreen()),
-                );
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.qr_code),
-              title: const Text('Check In/Out'),
-              onTap: () {
-                Navigator.pop(context);
-                _onItemTapped(1);
-              },
-            ),
-            const Divider(),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('Settings'),
-              onTap: () {
-                Navigator.pop(context);
-                // TODO: Navigate to settings screen
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.logout),
-              title: const Text('Logout'),
-              onTap: _handleLogout,
-            ),
-          ],
-        ),
-      ),
+
+
       body: _getPage[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Theme.of(context).colorScheme.onSecondary,

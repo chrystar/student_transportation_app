@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:student_transportation_app/models/user_model.dart';
 import 'package:student_transportation_app/routes/app_routes.dart';
+import 'package:student_transportation_app/views/auth/forgot_password_screen.dart';
 import 'package:student_transportation_app/views/parent/parent_home_screen.dart';
 import '../../providers/auth_provider.dart';
+import '../widgets/button.dart';
+import '../widgets/text_widget.dart';
 import 'register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -84,20 +87,23 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset(
-                    'assets/images/logo.png',
-                    width: 120,
-                    height: 120,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      text24Normal(
+                        text: "Login",
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      SizedBox(height: 12),
+                      text14Normal(
+                        text: 'Welcome back to the app',
+                        color: Colors.grey.shade600,
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 32),
-                  const Text(
-                    'Welcome Back',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 50),
                   TextFormField(
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
@@ -147,6 +153,19 @@ class _LoginScreenState extends State<LoginScreen> {
                       return null;
                     },
                   ),
+                  const SizedBox(height: 16),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: GestureDetector(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotPasswordScreen()));
+                      },
+                      child: text12Normal(
+                        text: "Forgot Password?",
+                        color: Color(0xffEC441E),
+                      ),
+                    ),
+                  ),
                   const SizedBox(height: 24),
                   SizedBox(
                     width: double.infinity,
@@ -154,6 +173,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       builder: (context, auth, child) {
                         return ElevatedButton(
                           onPressed: auth.isLoading ? null : _login,
+
                           child: Padding(
                             padding: const EdgeInsets.all(16.0),
                             child: auth.isLoading
@@ -166,23 +186,53 @@ class _LoginScreenState extends State<LoginScreen> {
                                   )
                                 : const Text(
                                     'Login',
-                                    style: TextStyle(fontSize: 16),
+                                    style: TextStyle(fontSize: 16, color: Colors.black),
                                   ),
                           ),
                         );
                       },
                     ),
                   ),
-                  const SizedBox(height: 16),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => const RegisterScreen(),
-                        ),
-                      );
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        color: Color(0xff4B5768),
+                        height: 0.5,
+                        width: 125,
+                      ),
+                      text14Normal(
+                          text: 'Or sign in',
+                          color: Color(0xff999DA3)),
+                      Container(
+                        color: Color(0xff4B5768),
+                        height: 0.5,
+                        width: 125,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Button(
+                    onPressed: (){},
+                    text: "Continue with Google",
+                    width: double.maxFinite,
+                    color: Color(0xffE4E7EB),
+                    textColor: Colors.black,
+                    //borderColor: AppColor.primaryThreeElementText,
+                  ),
+                  const SizedBox(height: 40),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => RegisterScreen()));
                     },
-                    child: const Text("Don't have an account? Register"),
+                    child: text16Normal(
+                      text: 'Create an Account',
+                      color: Color(0xffEC441E),
+                    ),
                   ),
                 ],
               ),

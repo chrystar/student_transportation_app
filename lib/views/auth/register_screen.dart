@@ -61,7 +61,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding: EdgeInsets.only(left: 30, right: 30),
+            padding: EdgeInsets.only(left: 20, right: 20),
             child: Form(
               key: _formKey,
               child: Column(
@@ -76,10 +76,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ),
                   const SizedBox(height: 24),
-                  appTextField(
+                  TextFormField(
                     controller: _nameController,
-                    hintText: "Enter your full name",
-                    validate: (value) {
+                    decoration: const InputDecoration(
+                      labelText: 'Name',
+                      prefixIcon: Icon(Icons.person),
+                      border: OutlineInputBorder(),
+                    ),
+                    validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your name';
                       }
@@ -87,10 +91,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     },
                   ),
                   const SizedBox(height: 16),
-                  appTextField(
+                  TextFormField(
                     controller: _emailController,
-                    hintText: "Enter your email",
-                    validate: (value) {
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: const InputDecoration(
+                      labelText: 'Email',
+                      prefixIcon: Icon(Icons.email),
+                      border: OutlineInputBorder(),
+                    ),
+                    validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your email';
                       }
@@ -140,23 +149,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     },
                   ),
                   const SizedBox(height: 16),
-                  appTextField(
+                  TextFormField(
                     controller: _passwordController,
                     obscureText: !_isPasswordVisible,
-                    hintText: 'Enter Password',
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _isPasswordVisible
-                            ? Icons.visibility_off
-                            : Icons.visibility,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      prefixIcon: const Icon(Icons.lock),
+                      border: const OutlineInputBorder(),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _isPasswordVisible
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isPasswordVisible = !_isPasswordVisible;
+                          });
+                        },
                       ),
-                      onPressed: () {
-                        setState(() {
-                          _isPasswordVisible = !_isPasswordVisible;
-                        });
-                      },
                     ),
-                    validate: (value) {
+                    validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your password';
                       }
@@ -167,24 +180,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     },
                   ),
                   const SizedBox(height: 16),
-                  appTextField(
+
+                  TextFormField(
                     controller: _confirmPasswordController,
                     obscureText: !_isConfirmPasswordVisible,
-                    hintText: 'Confirm Password',
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _isConfirmPasswordVisible
-                            ? Icons.visibility_off
-                            : Icons.visibility,
+                    decoration: InputDecoration(
+                      labelText: 'confirm Password',
+                      hintText: 'confirm password',
+                      prefixIcon: const Icon(Icons.lock),
+                      border: const OutlineInputBorder(),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _isConfirmPasswordVisible
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isConfirmPasswordVisible =
+                            !_isConfirmPasswordVisible;
+                          });
+                        },
                       ),
-                      onPressed: () {
-                        setState(() {
-                          _isConfirmPasswordVisible =
-                              !_isConfirmPasswordVisible;
-                        });
-                      },
                     ),
-                    validate: (value) {
+                    validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please confirm your password';
                       }
