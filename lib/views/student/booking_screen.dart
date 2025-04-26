@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:student_transportation_app/providers/booking_provider.dart';
 import 'package:student_transportation_app/views/student/payment_screen.dart';
 import '../../controllers/auth_controller.dart';
 import '../../models/trip_model.dart';
@@ -47,6 +49,13 @@ class _BookingScreenState extends State<BookingScreen> {
 
   DateTime _selectedDate = DateTime.now();
   TimeOfDay _selectedTime = TimeOfDay.now();
+
+
+  @override
+  void initState() {
+    super.initState();
+    loadUserData();
+  }
 
   int _selectedIndex = 0;
   int selectedPassengers = 1; // Default to 1 passenger
@@ -123,7 +132,7 @@ class _BookingScreenState extends State<BookingScreen> {
     if (user != null) {
       try {
         DocumentSnapshot userData =
-        await _firestore.collection('users').doc(user.uid).get();
+            await _firestore.collection('users').doc(user.uid).get();
 
         if (userData.exists) {
           setState(() {
@@ -250,7 +259,8 @@ class _BookingScreenState extends State<BookingScreen> {
   Future<void> _bookTrip() async {
     if (fromClickedText.isEmpty || toClickedText.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select pickup and dropoff locations')),
+        const SnackBar(
+            content: Text('Please select pickup and dropoff locations')),
       );
       return;
     }
@@ -307,8 +317,10 @@ class _BookingScreenState extends State<BookingScreen> {
         driverId: '',
         parentId: '',
         pickupTime: pickupTime,
-        pickupLocation: GeoPoint(_pickupLocation!.latitude, _pickupLocation!.longitude),
-        dropoffLocation: GeoPoint(_dropoffLocation!.latitude, _dropoffLocation!.longitude),
+        pickupLocation:
+            GeoPoint(_pickupLocation!.latitude, _pickupLocation!.longitude),
+        dropoffLocation:
+            GeoPoint(_dropoffLocation!.latitude, _dropoffLocation!.longitude),
         pickupAddress: fromClickedText,
         dropoffAddress: toClickedText,
         status: TripStatus.scheduled,
@@ -355,32 +367,13 @@ class _BookingScreenState extends State<BookingScreen> {
     });
   }
 
+
+
   @override
   Widget build(BuildContext context) {
+    final upComingTrip = Provider.of<BookingProvider>(context, listen: false);
+
     return Scaffold(
-      // appBar: AppBar(
-      //   title: text24Normal(
-      //     text: 'Smart Ride',
-      //     color: Theme.of(context).colorScheme.secondary,
-      //   ),
-      //   leading: Builder(
-      //     builder: (BuildContext context) {
-      //       return IconButton(
-      //         icon: Image.asset("assets/images/menubar.png"),
-      //         onPressed: () {
-      //           Scaffold.of(context).openDrawer();
-      //         },
-      //       );
-      //     },
-      //   ),
-      //   backgroundColor: Theme.of(context).colorScheme.onSecondary,
-      //   actions: [
-      //     Padding(
-      //       padding: const EdgeInsets.only(right: 15),
-      //       child: Icon(Icons.notifications),
-      //     ),
-      //   ],
-      // ),
       drawer: Drawer(
         backgroundColor: Theme.of(context).colorScheme.onSecondary,
         child: ListView(
@@ -456,207 +449,293 @@ class _BookingScreenState extends State<BookingScreen> {
       ),
       backgroundColor: Theme.of(context).colorScheme.onSecondary,
       body: SingleChildScrollView(
-       // padding: const EdgeInsets.only(left: 20, right: 20, top: 16),
         child: Column(
+         // clipBehavior: Clip.none,
           children: [
-            Positioned(
-              top: 0,
+            Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+               // color: Color(0xffEC441E),
+                color: Colors.deepOrange,
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(20),
+                  bottomRight: Radius.circular(20),
+                ),
+              ),
+              height: 120,
               child: Container(
-                width: double.infinity,
-                color: Colors.black,
-                height: 300,
+                padding: EdgeInsets.only(left: 20, right: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Builder(
+                      builder: (context) => IconButton(
+                        icon: Image(
+                            image: AssetImage('assets/images/menubar.png'), color: Colors.white,),
+                        onPressed: ()  {
+                          Scaffold.of(context).openDrawer();
+                        },
+                      ),
+                    ),
+                    Center(child: text24Normal(text: 'Smart Ride', color: Colors.white)),
+                    Icon(Icons.notifications, color: Colors.white,),
+                  ],
+                ),
               ),
             ),
-            //const SizedBox(height: 8),
-           Container(
-              padding: const EdgeInsets.only(left: 20, right: 20,),
-           decoration: BoxDecoration(
-             color: Colors.white,
-           ),
-           child: Positioned(
-             bottom: 30,
-             child: Column(
-                 children: [
-                   InkWell(
-                     onTap: () => _selectDate(context),
-                     child: Container(
-                       padding: const EdgeInsets.all(16),
-                       decoration: BoxDecoration(
-                         border: Border.all(color: Colors.grey),
-                         borderRadius: BorderRadius.circular(8),
-                       ),
-                       child: Row(
-                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                         children: [
-                           Text(DateFormat('MMM dd, yyyy').format(_selectedDate)),
-                           const Icon(Icons.calendar_today),
-                         ],
-                       ),
-                     ),
-                   ),
-                   const SizedBox(height: 24),
+            Container(
+              padding: const EdgeInsets.only(
+                  left: 20, right: 20, top: 16, bottom: 16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Column(
+                children: [
+                  InkWell(
+                    onTap: () => _selectDate(context),
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(DateFormat('MMM dd, yyyy')
+                              .format(_selectedDate)),
+                          const Icon(Icons.calendar_today),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
 
-                   InkWell(
-                     onTap: () => _selectTime(context),
-                     child: Container(
-                       padding: const EdgeInsets.all(16),
-                       decoration: BoxDecoration(
-                         border: Border.all(color: Colors.grey),
-                         borderRadius: BorderRadius.circular(8),
-                       ),
-                       child: Row(
-                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                         children: [
-                           Text(_selectedTime.format(context)),
-                           const Icon(Icons.access_time),
-                         ],
-                       ),
-                     ),
-                   ),
-                   const SizedBox(height: 24),
+                  InkWell(
+                    onTap: () => _selectTime(context),
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(_selectedTime.format(context)),
+                          const Icon(Icons.access_time),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
 
-                   Row(
-                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                     children: [
-                       popUpButtonContainer(
-                           text1: 'Pickup Location',
-                           text2: toClickedText.toString(),
-                           width: 160,
-                           context: context,
-                           onPressed: () {
-                             showModalBottomSheet(
-                                 context: context,
-                                 backgroundColor: Colors.white,
-                                 scrollControlDisabledMaxHeightRatio: 0.6,
-                                 builder: (context) {
-                                   return Container(
-                                     padding: EdgeInsets.only(top: 60),
-                                     width: double.infinity,
-                                     child: Column(
-                                       children: [
-                                         Expanded(
-                                           child: ListView.builder(
-                                             itemCount: states.length,
-                                             itemBuilder:
-                                                 (BuildContext context, int index) {
-                                               return Container(
-                                                 padding: EdgeInsets.all(20),
-                                                 child: GestureDetector(
-                                                   onTap: () {
-                                                     setState(() {
-                                                       toClickedText =
-                                                       states[index];
-                                                       _pickupLocation = const LatLng(37.7749, -122.4194); // Example coordinates
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      popUpButtonContainer(
+                          text1: 'Pickup Location',
+                          text2: toClickedText.toString(),
+                          width: 160,
+                          context: context,
+                          onPressed: () {
+                            showModalBottomSheet(
+                                context: context,
+                                backgroundColor: Colors.white,
+                                scrollControlDisabledMaxHeightRatio: 0.6,
+                                builder: (context) {
+                                  return Container(
+                                    padding: EdgeInsets.only(top: 60),
+                                    width: double.infinity,
+                                    child: Column(
+                                      children: [
+                                        Expanded(
+                                          child: ListView.builder(
+                                            itemCount: states.length,
+                                            itemBuilder:
+                                                (BuildContext context,
+                                                    int index) {
+                                              return Container(
+                                                padding: EdgeInsets.all(20),
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      toClickedText =
+                                                          states[index];
+                                                      _dropoffLocation =
+                                                          const LatLng(
+                                                              37.7749,
+                                                              -122.4194); // Example coordinates
+                                                    });
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: text20Normal(
+                                                      text: states[index]
+                                                          .toString(),
+                                                      color: Colors.black),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                });
+                          }),
+                      popUpButtonContainer(
+                          text1: 'Dropoff Location',
+                          text2: fromClickedText.toString(),
+                          width: 160,
+                          context: context,
+                          onPressed: () {
+                            showModalBottomSheet(
+                                context: context,
+                                backgroundColor: Colors.white,
+                                scrollControlDisabledMaxHeightRatio: 0.6,
+                                builder: (context) {
+                                  return Container(
+                                    padding: EdgeInsets.only(top: 60),
+                                    width: double.infinity,
+                                    child: Column(
+                                      children: [
+                                        Expanded(
+                                          child: ListView.builder(
+                                            itemCount: states.length,
+                                            itemBuilder:
+                                                (BuildContext context,
+                                                    int index) {
+                                              return Container(
+                                                padding: EdgeInsets.all(20),
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      fromClickedText =
+                                                          states[index];
+                                                      _pickupLocation =
+                                                          const LatLng(
+                                                              37.7749,
+                                                              -122.4194); // Example coordinates
+                                                    });
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: text20Normal(
+                                                      text: states[index]
+                                                          .toString(),
+                                                      color: Colors.black),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                });
+                          }),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
 
-                                                     });
-                                                     Navigator.pop(context);
-                                                   },
-                                                   child: text20Normal(
-                                                       text: states[index].toString(),
-                                                       color: Colors.black),
-                                                 ),
-                                               );
-                                             },
-                                           ),
-                                         ),
-                                       ],
-                                     ),
-                                   );
-                                 });
-                           }),
-                       popUpButtonContainer(
-                           text1: 'Dropoff Location',
-                           text2: fromClickedText.toString(),
-                           width: 160,
-                           context: context,
-                           onPressed: () {
-                             showModalBottomSheet(
-                                 context: context,
-                                 backgroundColor: Colors.white,
-                                 scrollControlDisabledMaxHeightRatio: 0.6,
-                                 builder: (context) {
-                                   return Container(
-                                     padding: EdgeInsets.only(top: 60),
-                                     width: double.infinity,
-                                     child: Column(
-                                       children: [
-                                         Expanded(
-                                           child: ListView.builder(
-                                             itemCount: states.length,
-                                             itemBuilder:
-                                                 (BuildContext context, int index) {
-                                               return Container(
-                                                 padding: EdgeInsets.all(20),
-                                                 child: GestureDetector(
-                                                   onTap: () {
-                                                     setState(() {
-                                                       fromClickedText =
-                                                       states[index];
-                                                       _dropoffLocation = const LatLng(37.7749, -122.4194); // Example coordinates
+                  // Passenger Selection
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: DropdownButton<int>(
+                      value: selectedPassengers,
+                      isExpanded: true,
+                      underline: const SizedBox(),
+                      // Remove the default underline
+                      items: List.generate(
+                              10,
+                              (index) =>
+                                  index + 1) // Options: 1 to 10 passengers
+                          .map((int value) {
+                        return DropdownMenuItem<int>(
+                          value: value,
+                          child:
+                              Text('$value Passenger${value > 1 ? 's' : ''}'),
+                        );
+                      }).toList(),
+                      onChanged: (int? newValue) {
+                        setState(() {
+                          selectedPassengers = newValue!;
+                        });
+                      },
+                    ),
+                  ),
 
-                                                     });
-                                                     Navigator.pop(context);
-                                                   },
-                                                   child: text20Normal(
-                                                       text: states[index].toString(),
-                                                       color: Colors.black),
-                                                 ),
-                                               );
-                                             },
-                                           ),
-                                         ),
-                                       ],
-                                     ),
-                                   );
-                                 });
-                           }),
-                     ],
-                   ),
-                   const SizedBox(height: 24),
+                  const SizedBox(height: 32),
 
-                   // Passenger Selection
-                   Container(
-                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                     decoration: BoxDecoration(
-                       border: Border.all(color: Colors.grey),
-                       borderRadius: BorderRadius.circular(8),
-                     ),
-                     child: DropdownButton<int>(
-                       value: selectedPassengers,
-                       isExpanded: true,
-                       underline: const SizedBox(),
-                       // Remove the default underline
-                       items: List.generate(
-                           10, (index) => index + 1) // Options: 1 to 10 passengers
-                           .map((int value) {
-                         return DropdownMenuItem<int>(
-                           value: value,
-                           child: Text('$value Passenger${value > 1 ? 's' : ''}'),
-                         );
-                       }).toList(),
-                       onChanged: (int? newValue) {
-                         setState(() {
-                           selectedPassengers = newValue!;
-                         });
-                       },
-                     ),
-                   ),
+                  // Book Button
+                  SizedBox(
+                    child: Button(
+                      width: double.infinity,
+                      //color: Color(0xffEC441E),
+                      color: Colors.deepOrange,
+                      onPressed: _isLoading ? null : _bookTrip,
+                      text: 'Book Transportation',
+                    ),
+                  ),
+                ],
+              ),
+            ),
 
-                   const SizedBox(height: 32),
-
-                   // Book Button
-                   SizedBox(
-                     child: Button(
-                       width: double.infinity,
-                       color: Color(0xffEC441E),
-                       onPressed: _isLoading ? null : _bookTrip,
-                       text: 'Book Transportation',
-                     ),
-                   ),
-                 ],
-               ),
-           ),
-           ),
+            //todo: upcoming Trips
+            Container(
+              padding: EdgeInsets.only(left: 30, right: 20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      text16Normal(
+                        text: 'Upcoming Trip',
+                        color: Colors.black,
+                      ),
+                      SizedBox(width: 170),
+                      text14Normal(
+                        text: 'see all',
+                        color: Colors.grey,
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 200,
+                    width: 600,
+                    child: ListView.builder(
+                      itemCount: 10,
+                      scrollDirection: Axis.horizontal,
+                      physics: BouncingScrollPhysics(),
+                      itemBuilder: (BuildContext context, int index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            height: 200,
+                            width: 150,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [
+                                BoxShadow(
+                                  offset: Offset(1,1),
+                                  color: Colors.grey,
+                                ),
+                              ]
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            )
           ],
         ),
       ),

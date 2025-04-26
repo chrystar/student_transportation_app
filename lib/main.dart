@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:student_transportation_app/providers/booking_provider.dart';
+import 'package:student_transportation_app/views/student/booking_screen.dart';
 import 'package:student_transportation_app/views/student/bottom_navigator.dart';
 import 'package:student_transportation_app/views/student/student_home_screen.dart';
 import 'firebase_options.dart';
@@ -36,6 +38,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => ThemeProvider(prefs)),
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => LocationProvider()),
+        ChangeNotifierProvider(create: (_) => BookingProvider()),
       ],
       child: const MyApp(),
     ),
@@ -55,11 +58,11 @@ class MyApp extends StatelessWidget {
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: themeProvider.themeMode,
-          initialRoute: AppRoutes.splash,
+          initialRoute: AppRoutes.studentHome,
           onGenerateRoute: AppRoutes.onGenerateRoute,
           onUnknownRoute: AppRoutes.onUnknownRoute,
           routes: AppRoutes.routes,
-          home: SplashScreen(),
+          home: BookingScreen(),
         );
       },
     );

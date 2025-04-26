@@ -50,19 +50,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBvhwSrMjg4RVbPq-dRWPmuRmtHhRkFvfc',
-    appId: '1:592419454000:android:38af71c50e2527a414c1f5',
-    messagingSenderId: '592419454000',
-    projectId: 'smart-challenge-app',
-    storageBucket: 'smart-challenge-app.firebasestorage.app',
+    apiKey: 'AIzaSyAjiHv9mbPYvI3Urhjc3n0GfJcy_SaqExw',
+    appId: '1:398157389708:android:2bff07d6354a2ac9d580a9',
+    messagingSenderId: '398157389708',
+    projectId: 'flutt-trans-sys',
+    storageBucket: 'flutt-trans-sys.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyB4XJ0Hd5e9Syl_Wimi1VlwYaxbbliRjVE',
-    appId: '1:592419454000:ios:2a96e41c2721b91514c1f5',
-    messagingSenderId: '592419454000',
-    projectId: 'smart-challenge-app',
-    storageBucket: 'smart-challenge-app.firebasestorage.app',
+    apiKey: 'AIzaSyANJ1M9bGUGv_Xv8nq31ViC-ahXtFvWf5c',
+    appId: '1:398157389708:ios:4a86aefecd11d06cd580a9',
+    messagingSenderId: '398157389708',
+    projectId: 'flutt-trans-sys',
+    storageBucket: 'flutt-trans-sys.firebasestorage.app',
     iosBundleId: 'com.example.studentTransportationApp',
   );
+
 }

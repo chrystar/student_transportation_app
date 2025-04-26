@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'message_page.dart';
 
 class MessageScreen extends StatelessWidget {
-  const MessageScreen({super.key});
+  const MessageScreen({super.key,});
 
   Future<List<Map<String, dynamic>>> fetchUsers() async {
     try {

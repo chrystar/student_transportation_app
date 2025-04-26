@@ -74,29 +74,7 @@ class _MessageScreenState extends State<MessageScreen> {
       }
     });
   }
-  //
-  // Future<void> _showNotification(Map<String, dynamic> message) async {
-  //   const androidDetails = AndroidNotificationDetails(
-  //     'messages_channel',
-  //     'Messages',
-  //     channelDescription: 'Channel for message notifications',
-  //     importance: Importance.high,
-  //     priority: Priority.high,
-  //     enableLights: true,
-  //     enableVibration: true,
-  //     playSound: true,
-  //   );
-  //   const IOSNotificationDetails iosDetails = IOSNotificationDetails();
-  //   const details =
-  //       NotificationDetails(android: androidDetails, iOS: iosDetails);
-  //
-  //   await _notificationsPlugin.show(
-  //     DateTime.now().millisecond,
-  //     'New Message from ${message['senderName']}',
-  //     message['content'],
-  //     details,
-  //   );
-  // }
+
 
   Future<void> _pickImage() async {
     final picker = ImagePicker();

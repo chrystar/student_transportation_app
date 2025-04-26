@@ -27,14 +27,13 @@ class _StudentHomeScreenState extends State<StudentHomeScreen>
   String _studentName = '';
   String _studentEmail = '';
   int _selectedIndex = 0;
+  String _parentName = '';
 
   final List _getPage = [
-   // StudentHomeScreen(),
     BookingScreen(),
     CheckInOutScreen(),
-    MessageScreen(),
+     MessageScreen(),
     TrackingScreen(),
-    // TripHistoryScreen(userId: _auth.currentUser?.uid, isParent: false),
   ];
 
 
